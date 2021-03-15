@@ -1,0 +1,26 @@
+{
+    "dum": {
+        "name": "dummy",
+        "surname": "dummysurname",
+        "email": "dummy@email.com",
+        "password": "dum00"
+    },
+    "aj": {
+        "name": "ananya",
+        "surname": "joshi",
+        "email": "ananya@gmail.com",
+        "password": "aj12"
+    },
+    "aaj": {
+        "name": "ananya",
+        "surname": "joshi",
+        "email": "ananya@gmail.com",
+        "password": "aaj20"
+    },
+    "aak": {
+        "name": "ananya",
+        "surname": "joshi",
+        "email": "ananya@gmail",
+        "password": "awesome"
+    }
+}
