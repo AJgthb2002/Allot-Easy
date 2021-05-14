@@ -1,5 +1,3 @@
 pywebio
 flask
-argparse
-csv
 pandas
