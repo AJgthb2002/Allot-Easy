@@ -4,7 +4,7 @@ from csv import *
 from pywebio.input import *
 from pywebio.output import *
 
-header_img = open('images\header_new.jpg', 'rb').read()    
+header_img = open('images/header_new.jpg', 'rb').read()    
 comp_allotment=[]
 IT_allotment=[]
 mech_allotment=[]
