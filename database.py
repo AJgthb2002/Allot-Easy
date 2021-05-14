@@ -377,7 +377,7 @@ class Data:
             
     
     def student_sign_up(self):
-        signup_img = open('images\sign_up_img.jpg', 'rb').read()
+        signup_img = open('images/sign_up_img.jpg', 'rb').read()
         with use_scope("main", clear=True):
             put_image(signup_img,width='150%',height='400px')
             data = input_group("Student sign up info",[input('Enter your Name', type=TEXT, name='name',required=True), input('Enter your Surname', name='surname', type=TEXT, required=True)])
