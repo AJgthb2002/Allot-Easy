@@ -26,7 +26,11 @@ class Allotment_mechanism:
                 put_image(header_img, width='100%', height='40px', position=0)
             with use_scope("main", clear=True):
                 put_success("Allotment process already done!")
-                data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
+                data = input_group(
+                    "Reset Allotment or return to menu",[actions('', [ {'label': 'Back', 'value': 1},{'label': 'Reset', 'value': 2}], name='action', help_text=None),])
+                if data["action"]==2:
+                    self.flag=1
+                #data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:
             with use_scope('ROOT'):
