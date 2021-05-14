@@ -12,8 +12,8 @@ user= None
 name=""
 pwd=None
 
-stud_menu_img = open('images\student_menu_img.jpg', 'rb').read()
-header_img = open('images\header_new.jpg', 'rb').read()
+stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
+header_img = open('images/header_new.jpg', 'rb').read()
 
 def check_cet(user_inp):
     if (user_inp > 200 or user_inp < 0):
