@@ -6,9 +6,9 @@ from pywebio.output import *
 
 mydata= Data() #object of class Data
 
-welm_img = open('images\Welcome to AllotEasy.jpg', 'rb').read()  
-header_img = open('images\header_new.jpg', 'rb').read()
-aboutus_img = open('images\Aboutus_img.jpg', 'rb').read()
+welm_img = open('images/Welcome to AllotEasy.jpg', 'rb').read()  
+header_img = open('images/header_new.jpg', 'rb').read()
+aboutus_img = open('images/Aboutus_img.jpg', 'rb').read()
 
 
 def check_student_admin_choice(user_inp):
@@ -89,7 +89,7 @@ class Menu:
                 self.login()
 
   def menu_for_student(self):
-    stud_menu_img = open('images\student_menu_img.jpg', 'rb').read()
+    stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
     
     choice= None 
     while(choice!=7): # breaks out of loop when 7 i.e. logout is selected
@@ -111,7 +111,7 @@ class Menu:
 
   def menu_for_admin(self):
     clear('ROOT') 
-    admin_menu_img = open('images\\admin_menu_img.jpg', 'rb').read()
+    admin_menu_img = open('images/admin_menu_img.jpg', 'rb').read()
     choice= None 
     while(choice!=7):  # breaks out of loop when 7 i.e. logout is selected
         with use_scope("main", clear=True):
