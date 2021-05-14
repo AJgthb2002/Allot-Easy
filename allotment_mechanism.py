@@ -31,6 +31,7 @@ class Allotment_mechanism:
                     "Reset Allotment or return to menu",[actions('', [ {'label': 'Back', 'value': 1},{'label': 'Reset', 'value': 2}], name='action', help_text=None),])
                 if data["action"]==2:
                     self.flag=1
+                    self.allotment_done=False 
                 #data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:
