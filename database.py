@@ -88,13 +88,13 @@ class Data:
                 style(put_text(f"Allotment result for {branch} engineering"),"color:darkgreen")
                 df = pd.read_csv('datasheet.csv')
                 # filter the result table for the inputted branch and display rank wise (rank, name, surname, email, marks, allotment)
-                fa_table_df= df[["NAME","SURNAME","EMAIL_ID","MARKS", "ALLOTMENT"]]
+                fa_table_df= df[["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"]]
                 fa_table_cond= fa_table_df[fa_table_df["ALLOTMENT"]==branch]
                 fa_table_cond.head()
                 fa_table_cond = fa_table_cond.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_cond.values.tolist()
                 
-                put_table(fa_table,header=["NAME","SURNAME","EMAIL_ID","MARKS", "ALLOTMENT"])
+                put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"])
 
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
@@ -118,6 +118,7 @@ class Data:
                         
                             put_table([["Name", f"{row[0]} {row[1]}"],
                             ["Email",f"{row[2]}"],
+                            ["Gender", f"{row[9]}"],
                             ["Marks",f"{row[3]}"],
                             ["Preference 1 code",f"{row[4]}"],
                             ["Preference 2 code",f"{row[5]}"],
@@ -156,13 +157,14 @@ class Data:
                                 put_table([["Name", f"{row[0]} {row[1]}"],
                                 ["Email",f"{row[2]}"],
                                 ["Marks",f"{row[3]}"],
+                                ["Gender", f"{row[9]}"],
                                 ["Preference 1 code",f"{row[4]}"],
                                 ["Preference 2 code",f"{row[5]}"],
                                 ["Preference 3 code",f"{row[6]}"],
                                 ])
                             
                                 if mymachine.allotment_done== True:
-                                    if (row[7]!="--"):
+                                    if (row[7]!="-"):
                                         put_success(f"\nAlloted branch: {row[7]} Engineering") 
                                     else:
                                         put_info("No seat alloted in this round.")     
@@ -227,6 +229,7 @@ class Data:
                                 put_table([["Name", f"{row[0]} {row[1]}"],
                                 ["Email",f"{row[2]}"],
                                 ["Marks",f"{row[3]}"],
+                                ["Gender", f"{row[9]}"],
                                 ["Preference 1 code",f"{row[4]}"],
                                 ["Preference 2 code",f"{row[5]}"],
                                 ["Preference 3 code",f"{row[6]}"],
@@ -243,12 +246,16 @@ class Data:
                     with use_scope("main", clear=True):
                         data1 = input_group("Fill your application details",[
                         input('Email address', name='email', type=TEXT, required=True),
+                        radio(label="Gender", name='Gender', options=[("Male",1),("Female",2)], required=True, inline=True, value=None),
                         input('CET Marks', name='marks', type=NUMBER, required=True, help_text="Enter score out of 200.",validate=check_cet),
+                        file_upload(label="CET Scorecard", accept=".pdf", name='cet_score_file',max_size='10M', placeholder="choose a file")
                         ],)
 
                         surname=(lines[row_to_edit-1]).split(",")[1]
                         email = data1["email"]
+                        gender= 'M' if (data1["Gender"]==1) else 'F'
                         marks = data1["marks"]
+                        cet_scorecard = data1["cet_score_file"]
 
                         data2 = input_group("Enter your branch preference",[
                         select('1st Preference:', name='pref1', options=[("Computer (pref code:0)",0),("IT (pref code:1)",1),("Mechanical (pref code:2)",2), ("Electronics (pref code:3)",3)], required=True),
@@ -259,7 +266,7 @@ class Data:
                         pref2 = data2["pref2"]
                         pref3 = data2["pref3"]
                         allotment = "--"
-                        lines[row_to_edit-1]=f"{name},{surname},{email},{marks},{pref1},{pref2},{pref3},'--',{pwd}"
+                        lines[row_to_edit-1]=f"{name},{surname},{email},{marks},{pref1},{pref2},{pref3},'--',{pwd},{gender}"
                     
                     with open("datasheet.csv",'w') as f:
                         # overwrite
@@ -290,9 +297,17 @@ class Data:
                     reader_object = reader(f)
                     for row in reader_object:
                         if(row[0]==name) and row[8]==pwd:
-                            for i in range(0,7):
-                                put_text(row[i], end="   ")
-                            put_info(f"\nYour alloted branch: {row[7]}")  
+                            put_table([["Name", f"{row[0]} {row[1]}"],
+                                ["Email",f"{row[2]}"],
+                                ["Marks",f"{row[3]}"],
+                                ["Gender", f"{row[9]}"],
+                                ["Preference 1 code",f"{row[4]}"],
+                                ["Preference 2 code",f"{row[5]}"],
+                                ["Preference 3 code",f"{row[6]}"],
+                                ])
+                            put_info(f"\nYour alloted branch: {row[7]}") 
+                data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
+            clear('ROOT') 
         else:
             with use_scope('ROOT'):
                 put_image(header_img, width='100%', height='40px', position=0)
@@ -354,7 +369,7 @@ class Data:
                     {"Branch": "Computer Engineering", "Vacancies": self.vacancies[0]},
                     {"Branch": "IT Engineering", "Vacancies": self.vacancies[1]},
                     {"Branch": "Mechanical Engineering", "Vacancies": self.vacancies[2]},
-                    {"Branch": "Elecronics Engineering", "Vacancies": self.vacancies[3]},
+                    {"Branch": "Electronics Engineering", "Vacancies": self.vacancies[3]},
                 ],header=["Branch", "Vacancies"])
 
             data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
@@ -384,12 +399,13 @@ class Data:
         with open('datasheet.csv', 'a+', newline='') as f_object: 
             writer_object = writer(f_object) 
             email = "--"
+            gender="Not specified"
             marks = 0
             pref1 = -1
             pref2 = -1
             pref3 = -1
             allotment = "--"
-            record = [data['name'], data['surname'], email, marks, pref1, pref2, pref3, allotment,pswd]
+            record = [data['name'], data['surname'], email, marks, pref1, pref2, pref3, allotment,pswd,gender]
             writer_object.writerow(record) 
             f_object.close()
         with use_scope("main"):    
@@ -418,25 +434,25 @@ class Data:
         if (mymachine.allotment_done== True):
             with use_scope("main", clear=True) :
                 # print table of all records (name, surname, email, marks)
-                fa_table_df= df[["NAME","SURNAME","EMAIL_ID","MARKS", "ALLOTMENT"]]
+                fa_table_df= df[["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"]]
                 fa_table_df.head()
                 fa_table_df = fa_table_df.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_df.values.tolist()
                 
                 style(put_text("Full Allotment Result"), "color: darkblue" )
-                put_table(fa_table,header=["NAME","SURNAME","EMAIL_ID","MARKS", "ALLOTMENT"])
+                put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:
             with use_scope("main", clear=True) :
                 put_info("Allotment not yet done... Please visit the page later for result.")
                 
-                fa_table_df= df[["NAME","SURNAME","EMAIL_ID","MARKS"]]
+                fa_table_df= df[["NAME","SURNAME","GENDER","EMAIL_ID","MARKS"]]
                 fa_table_df.head()
                 fa_table_df = fa_table_df.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_df.values.tolist()
                 style(put_text("Registrations:"), "color: darkblue" )
-                put_table(fa_table,header=["NAME","SURNAME","EMAIL_ID","MARKS"])
+                put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         

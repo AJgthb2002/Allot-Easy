@@ -75,9 +75,9 @@ class Menu:
             
         if user_inp ==3:
             # login as admin is selected
-            # (pwd for admin is 12345)
+            # (pwd for admin is secretadmin)
             pwd= input("Enter password:", type=PASSWORD, required=True)
-            if (pwd =="12345"):
+            if (pwd =="secretadmin"):
                 with use_scope("main"):
                     put_success("Welcome, Admin!")
                 mydata.set_userinfo(3,"admin") # send user info to database file

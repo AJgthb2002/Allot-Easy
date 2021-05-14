@@ -17,7 +17,7 @@ class Allotment_mechanism:
     
     def __init__(self):
         self.allotment_done= False
-        self.vacancies={0: 15, 1: 15, 2: 15, 3: 15}
+        self.vacancies={0: 120, 1: 60, 2: 60, 3: 120}
 
     def run_allotment(self):
         global comp_allotment, IT_allotment, mech_allotment, elec_allotment, all_allotments, no_allotment
@@ -35,30 +35,34 @@ class Allotment_mechanism:
                 put_text("Running allotment process.. please wait") 
             
             df = pd.read_csv("datasheet.csv")
+                
             allotment_pre = df[(df.PREF1>=0) & (df.PREF2>=0) & (df.PREF3>=0)]
             allotment = allotment_pre.sort_values('MARKS', ascending = False)
-            
-            dict1 = {}
-            for i in range(len(allotment)):
-                (surname, marks,pref1,pref2,pref3) = (allotment.iloc[i][1],allotment.iloc[i][3],allotment.iloc[i][4],allotment.iloc[i][5],allotment.iloc[i][6])
-                dict1[allotment.iloc[i][0]]= (surname,marks,pref1,pref2,pref3)
 
-            for regis in dict1:
-                pref1 = dict1[regis][2]
-                pref2 = dict1[regis][3]
-                pref3 = dict1[regis][4]
+            dict1 = {}
+            
+            for i in range(len(allotment)):
+                nm = allotment.iloc[i][0]
+                surname= allotment.iloc[i][1]
+                marks= allotment.iloc[i][3]
+                pref1= allotment.iloc[i][4]
+                pref2= allotment.iloc[i][5]
+                pref3= allotment.iloc[i][6]
+                
+                
+                dict1[f"{i}"]= (nm,surname,marks,pref1,pref2,pref3)
                 
                 if(self.vacancies[pref1]>0):
                     self.vacancies[pref1]-=1
-                    all_allotments[pref1].append((regis,dict1[regis][0]))
+                    all_allotments[pref1].append((nm, surname))
                 elif(self.vacancies[pref2]>0):
                     self.vacancies[pref2]-=1
-                    all_allotments[pref2].append((regis,dict1[regis][0]))
+                    all_allotments[pref2].append((nm, surname))
                 elif(self.vacancies[pref3]>0):
                     self.vacancies[pref3]-=1
-                    all_allotments[pref3].append((regis,dict1[regis][0]))
+                    all_allotments[pref3].append((nm, surname))
                 else:
-                    no_allotment.append((regis,dict1[regis][0]))
+                    no_allotment.append((nm, surname))
             
             #****************Allotment done***********************************
             self.update_allotments()
@@ -94,23 +98,24 @@ class Allotment_mechanism:
             for person in comp_allotment:
                 row_to_edit= self.get_row(person)
                 all_fields= lines[row_to_edit-1].split(",")
-                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Computer,{all_fields[8]}"
+                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Computer,{all_fields[8]},{all_fields[9]}"
             
             for person in IT_allotment:
                 row_to_edit= self.get_row(person)
                 all_fields= lines[row_to_edit-1].split(",")
-                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},IT,{all_fields[8]}"
+                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},IT,{all_fields[8]},{all_fields[9]}"
 
             for person in mech_allotment:
                 row_to_edit= self.get_row(person)
                 all_fields= lines[row_to_edit-1].split(",")
-                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Mechanical,{all_fields[8]}"
+                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Mechanical,{all_fields[8]},{all_fields[9]}"
 
 
             for person in elec_allotment:
                 row_to_edit= self.get_row(person)
                 all_fields= lines[row_to_edit-1].split(",")
-                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Electronics,{all_fields[8]}"
+                lines[row_to_edit-1]=f"{all_fields[0]},{all_fields[1]},{all_fields[2]},{all_fields[3]},{all_fields[4]},{all_fields[5]},{all_fields[6]},Electronics,{all_fields[8]},{all_fields[9]}"
+        
         
         with open("datasheet.csv",'w') as f:
             # overwrite
@@ -131,6 +136,6 @@ class Allotment_mechanism:
 
             for row in reader_object:
                 if row[0]==last_person[0] and row[1]== last_person[1]:
-                        # return the row no. where record is found
+                        # return the marks
                         return row[3]
         
