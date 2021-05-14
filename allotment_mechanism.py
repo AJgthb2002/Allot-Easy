@@ -18,6 +18,7 @@ class Allotment_mechanism:
     def __init__(self):
         self.allotment_done= False
         self.vacancies={0: 120, 1: 60, 2: 60, 3: 120}
+        self.flag=0
 
     def run_allotment(self):
         global comp_allotment, IT_allotment, mech_allotment, elec_allotment, all_allotments, no_allotment
