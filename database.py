@@ -85,7 +85,7 @@ class Data:
                 put_image(header_img, width='100%', height='40px', position=0)
             with use_scope("main", clear=True):
                 branch= select("Select a branch",options=[{"label": "Computer Engineering", "value":"Computer", "selected":True},{"label": "IT Engineering", "value":"IT"},{"label": "Mechanical Engineering", "value":"Mechanical"},{"label": "Electronics Engineering", "value":"Electronics"}])
-                style(put_text(f"Allotment result for {branch} engineering"),"color:darkgreen")
+                #style(put_text(f"Allotment result for {branch} engineering"),"color:darkgreen")
                 df = pd.read_csv('datasheet.csv')
                 # filter the result table for the inputted branch and display rank wise (rank, name, surname, email, marks, allotment)
                 fa_table_df= df[["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"]]
@@ -93,7 +93,7 @@ class Data:
                 fa_table_cond.head()
                 fa_table_cond = fa_table_cond.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_cond.values.tolist()
-                
+                style(put_text(f"Allotment result: {len(fa_table)} students were alloted a seat in {branch} engineering: "),"color:darkgreen")
                 put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"])
 
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
@@ -126,7 +126,10 @@ class Data:
                             ])
                         
                             if mymachine.allotment_done== True:
-                                put_success(f"\nYour alloted branch: {row[7]} Engineering")
+                                if (row[7]!="-"):
+                                        put_success(f"\nCongratulations! Your alloted branch: {row[7]} Engineering") 
+                                else:
+                                        put_info("Sorry! No seat alloted in this round.")  
                             else:
                                 put_info("Allotment is not yet done.")
                             data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
@@ -219,7 +222,7 @@ class Data:
                 with use_scope('ROOT'):
                     put_image(header_img, width='100%', height='40px', position=0)
                 with use_scope("main", clear=True):
-                    put_info("Cannot edit the application now.")
+                    put_info("Sorry! You cannot edit the application now.")
                     with open("datasheet.csv",'r') as f:
                         reader_object = reader(f)
                         for row in reader_object:
@@ -292,7 +295,7 @@ class Data:
             with use_scope('ROOT'):
                 put_image(header_img, width='100%', height='40px', position=0)
             with use_scope("main", clear=True):
-                put_info("Cannot withdraw the application now. Your registered details: ")
+                put_info("Sorry! You cannot withdraw the application now. Your registered details: ")
                 with open("datasheet.csv",'r') as f:
                     reader_object = reader(f)
                     for row in reader_object:
@@ -398,7 +401,7 @@ class Data:
             pswd = input("Set your password: ", type=PASSWORD, required=True)
         with open('datasheet.csv', 'a+', newline='') as f_object: 
             writer_object = writer(f_object) 
-            email = "--"
+            email = "-"
             gender="Not specified"
             marks = 0
             pref1 = -1
@@ -439,7 +442,7 @@ class Data:
                 fa_table_df = fa_table_df.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_df.values.tolist()
                 
-                style(put_text("Full Allotment Result"), "color: darkblue" )
+                style(put_text(f"Full Allotment Result: {len(fa_table)} students were alloted seat in this round."), "color: darkblue" )
                 put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
