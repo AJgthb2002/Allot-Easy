@@ -30,14 +30,19 @@ class Allotment_mechanism:
                 data = input_group(
                     "Reset Allotment or return to menu",[actions('', [ {'label': 'Back', 'value': 1},{'label': 'Reset', 'value': 2}], name='action', help_text=None),])
                 if data["action"]==2:
-                    self.flag=1
-                    self.allotment_done=False
-                    self.vacancies={0: 120, 1: 60, 2: 60, 3: 120}
-                    comp_allotment.clear()
-                    IT_allotment.clear()
-                    mech_allotment.clear()
-                    elec_allotment.clear()
-                    no_allotment.clear()
+                    confirmation = input_group("Confirmation: Do you wish to reset all the allotments?",
+                                    [actions("",[
+                                    {"label":"YES","value":"y"}, {"label":"NO", "value":"n"}
+                                    ],name="action")])
+                    if confirmation["action"]=="y":
+                        self.flag=1
+                        self.allotment_done=False 
+                        self.vacancies={0: 120, 1: 60, 2: 60, 3: 120}
+                        comp_allotment.clear()
+                        IT_allotment.clear()
+                        mech_allotment.clear()
+                        elec_allotment.clear()
+                        no_allotment.clear()
                 #data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:
