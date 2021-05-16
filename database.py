@@ -268,8 +268,8 @@ class Data:
                         pref1 = data2["pref1"]
                         pref2 = data2["pref2"]
                         pref3 = data2["pref3"]
-                        allotment = "--"
-                        lines[row_to_edit-1]=f"{name},{surname},{email},{marks},{pref1},{pref2},{pref3},'--',{pwd},{gender}"
+                        allotment = "-"
+                        lines[row_to_edit-1]=f"{name},{surname},{email},{marks},{pref1},{pref2},{pref3},'-',{pwd},{gender}"
                     
                     with open("datasheet.csv",'w') as f:
                         # overwrite
@@ -442,7 +442,7 @@ class Data:
                 fa_table_df = fa_table_df.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_df.values.tolist()
                 
-                style(put_text(f"Full Allotment Result: {len(fa_table)} students were alloted seat in this round."), "color: darkblue" )
+                style(put_text("Full Allotment Result: "), "color: darkblue" )
                 put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS", "ALLOTMENT"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
@@ -454,7 +454,7 @@ class Data:
                 fa_table_df.head()
                 fa_table_df = fa_table_df.sort_values('MARKS', ascending = False)
                 fa_table= fa_table_df.values.tolist()
-                style(put_text("Registrations:"), "color: darkblue" )
+                style(put_text(f" {len(fa_table)} Registrations found :"), "color: darkblue" )
                 put_table(fa_table,header=["NAME","SURNAME","GENDER","EMAIL_ID","MARKS"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')

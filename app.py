@@ -4,7 +4,7 @@ from pywebio.platform.flask import webio_view
 from pywebio import STATIC_PATH
 from flask import Flask, send_from_directory
 import argparse
-from pywebio import start_server
+from pywebio import start_server, session
 from menu import Menu
 
 
@@ -13,6 +13,8 @@ header_img = open('images/header_new.jpg', 'rb').read()
 app= Flask(__name__)
 
 def main_func():
+    session.set_env(title='Allot Easy', output_animation=False)
+
     mymenu.user=None
     while(mymenu.user!=4):  # end program when option 4 i.e. exit portal is selected.
         mymenu.login()
@@ -28,12 +30,12 @@ def main_func():
 
 app.add_url_rule('/tool', 'webio_view', webio_view(main_func), methods=['GET','POST','OPTIONS'])
 
-if __name__== '__main__':
-    parser= argparse.ArgumentParser()
-    parser.add_argument("-p", "--port", type=int, default=8080)
-    args= parser.parse_args()
-    start_server(main_func, port= args.port)
+# if __name__== '__main__':
+#     parser= argparse.ArgumentParser()
+#     parser.add_argument("-p", "--port", type=int, default=8080)
+#     args= parser.parse_args()
+#     start_server(main_func, port= args.port, websocket_ping_interval= 60)
 
-#app.run(host='Localhost', port=80) 
+app.run(host='Localhost', port=80) 
 
 # visit http://localhost/tool to open the application

@@ -43,6 +43,18 @@ class Allotment_mechanism:
                         mech_allotment.clear()
                         elec_allotment.clear()
                         no_allotment.clear()
+                        lines=[]
+                        with open("datasheet.csv",'r') as f:
+                            lines= f.read().splitlines()
+                            for i in range(1, len(lines)):
+                                fields=[]
+                                fields=lines[i].split(',')
+                                lines[i]= f"{fields[0]},{fields[1]},{fields[2]},{fields[3]},{fields[4]},{fields[5]},{fields[6]},-,{fields[8]},{fields[9]}"
+
+                        with open("datasheet.csv",'w') as f:
+                            # overwrite
+                            for line in lines:
+                                f.write(line+"\n")        
                 #data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:

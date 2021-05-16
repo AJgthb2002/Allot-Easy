@@ -93,11 +93,29 @@ class Menu:
     stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
     
     choice= None 
+    def set_choice(val):
+        choice= val
+
     while(choice!=7): # breaks out of loop when 7 i.e. logout is selected
         if mydata.flag==0: 
             # flag=0 indicates user has not withdrawn his application.
             with use_scope("main", clear=True):
                 put_image(stud_menu_img,width='150%',height='400px')
+                # put_column(content=[
+                #     put_image(stud_menu_img,width='150%',height='400px', position=1), None,
+                #     put_buttons([
+                #         {'label':"View Seat matrix", 'value':1,'color':'outline-info'}
+                #     ], position=2, onclick=set_choice), None, 
+                #     put_buttons([
+                #         {'label':"Fill Application details", 'value':2,'color':'outline-info'}
+                #     ], position=3, onclick=set_choice), None, 
+                #     put_buttons([
+                #         {'label':"Check your application status", 'value':3,'color':'outline-info'}
+                #     ], position=4, onclick=set_choice), None, 
+                #     put_buttons([
+                #         {'label':"Withdraw application", 'value':4,'color':'outline-info'}
+                #     ], position=5, onclick=set_choice, scope="main"), None, 
+                # ], size='auto')
             choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
         else: 
             # flag=1 is the case where user has withdrawn the application. So we do not show him any other option and force him to logout.
@@ -116,9 +134,7 @@ class Menu:
     mymachine.flag=0
     choice= None 
     while(choice!=7):  # breaks out of loop when 7 i.e. logout is selected
-#         with use_scope("main", clear=True):
-#                 put_image(admin_menu_img,width='150%',height='400px')
-#         choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
+
         if mymachine.flag==0:
             with use_scope("main", clear=True):
                     put_image(admin_menu_img,width='150%',height='400px')
