@@ -31,7 +31,13 @@ class Allotment_mechanism:
                     "Reset Allotment or return to menu",[actions('', [ {'label': 'Back', 'value': 1},{'label': 'Reset', 'value': 2}], name='action', help_text=None),])
                 if data["action"]==2:
                     self.flag=1
-                    self.allotment_done=False 
+                    self.allotment_done=False
+                    self.vacancies={0: 120, 1: 60, 2: 60, 3: 120}
+                    comp_allotment.clear()
+                    IT_allotment.clear()
+                    mech_allotment.clear()
+                    elec_allotment.clear()
+                    no_allotment.clear()
                 #data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')
         else:
@@ -45,7 +51,7 @@ class Allotment_mechanism:
             allotment_pre = df[(df.PREF1>=0) & (df.PREF2>=0) & (df.PREF3>=0)]
             allotment = allotment_pre.sort_values('MARKS', ascending = False)
 
-            dict1 = {}
+            #dict1 = {}
             
             for i in range(len(allotment)):
                 nm = allotment.iloc[i][0]
@@ -56,7 +62,7 @@ class Allotment_mechanism:
                 pref3= allotment.iloc[i][6]
                 
                 
-                dict1[f"{i}"]= (nm,surname,marks,pref1,pref2,pref3)
+               # dict1[f"{i}"]= (nm,surname,marks,pref1,pref2,pref3)
                 
                 if(self.vacancies[pref1]>0):
                     self.vacancies[pref1]-=1
