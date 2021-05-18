@@ -9,8 +9,8 @@ from menu import Menu
 
 
 mymenu= Menu()  # obj of class Menu
-header_img = open('images/header_new.jpg', 'rb').read()
-goodluck_img= open('images/Goodluck.png', 'rb').read()
+header_img = open('images\header_new.jpg', 'rb').read()
+goodluck_img= open('images\Goodluck.png', 'rb').read()
 app= Flask(__name__)
 
 def main_func():
