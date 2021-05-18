@@ -12,9 +12,9 @@ header_img = open('images/header_new.jpg', 'rb').read()
 aboutus_img = open('images/Aboutus_img.jpg', 'rb').read()
 
 
-def check_student_admin_choice(user_inp):
-    if (user_inp > 7 or user_inp < 1):
-        return ("Invalid choice number. Select a choice from 1 to 7") 
+# def check_student_admin_choice(user_inp):
+#     if (user_inp > 7 or user_inp < 1):
+#         return ("Invalid choice number. Select a choice from 1 to 7") 
     
 
 class Menu:
@@ -40,7 +40,7 @@ class Menu:
         {'label': 'Login (Admin)', 'value': 3}, 
         {'label': 'About Us', 'value': "Aboutus"},
         {'label': 'Exit', 'value': 4}, 
-     ], name='action', help_text=None),
+        ], name='action', help_text=None),
     ])
     
     user_inp= login_choice["action"]
@@ -59,7 +59,8 @@ class Menu:
         
         if user_inp==2 :
             # login as student is selected
-            name = input("Enter student name: ", type=TEXT, required=True)
+            name_surname = input("Enter full name (name surname): ", type=TEXT, required=True)
+            name= (name_surname.split())[0]
             mydata.set_userinfo(2,name) # send user info to database file
             is_correct_pswd = mydata.check_pswd(name)
             if(is_correct_pswd==1):  # name and password match
@@ -93,34 +94,22 @@ class Menu:
     stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
     
     choice= None 
-    def set_choice(val):
-        choice= val
-
-    while(choice!=7): # breaks out of loop when 7 i.e. logout is selected
+    
+    while(choice!=8): # breaks out of loop when 7 i.e. logout is selected
         if mydata.flag==0: 
             # flag=0 indicates user has not withdrawn his application.
+            
             with use_scope("main", clear=True):
-                put_image(stud_menu_img,width='150%',height='400px')
-                # put_column(content=[
-                #     put_image(stud_menu_img,width='150%',height='400px', position=1), None,
-                #     put_buttons([
-                #         {'label':"View Seat matrix", 'value':1,'color':'outline-info'}
-                #     ], position=2, onclick=set_choice), None, 
-                #     put_buttons([
-                #         {'label':"Fill Application details", 'value':2,'color':'outline-info'}
-                #     ], position=3, onclick=set_choice), None, 
-                #     put_buttons([
-                #         {'label':"Check your application status", 'value':3,'color':'outline-info'}
-                #     ], position=4, onclick=set_choice), None, 
-                #     put_buttons([
-                #         {'label':"Withdraw application", 'value':4,'color':'outline-info'}
-                #     ], position=5, onclick=set_choice, scope="main"), None, 
-                # ], size='auto')
-            choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
+                put_image(stud_menu_img,width='80%',height='300px')
+            data= input_group("Student Menu", [
+                radio(label="", name='menu', options=[("View Seat Matrix",1),("Fill Application details",2),("Check your application status",3),("Withdraw application",4),("View Branchwise cutoff marks",5),("View data of vacancies left",6),("Change Password",7),("Logout",8)], required=True, inline=False, value=None)    
+            ])
+            choice= data['menu']
+            #choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
         else: 
             # flag=1 is the case where user has withdrawn the application. So we do not show him any other option and force him to logout.
-            choice=7
-        if choice!=7:
+            choice=8
+        if choice!=8:
             # when any choice other than logout is selected, call the corresponding function from the functions list in database.py
             clear("main")
             mydata.student_options[choice-1](mydata) 
@@ -137,8 +126,12 @@ class Menu:
 
         if mymachine.flag==0:
             with use_scope("main", clear=True):
-                    put_image(admin_menu_img,width='150%',height='400px')
-            choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
+                    put_image(admin_menu_img,width='80%',height='300px')
+            data= input_group("Admin Menu", [
+                radio(label="", name='menu', options=[("Run Seat allotment process",1),("View full allotment result",2),("View branch-wise allotment result",3),("Search a student",4),("Get list of students without allotment",5),("View data of vacancies left",6),("Logout",7)], required=True, inline=False, value=None)    
+            ])
+            choice= data['menu']        
+            #choice= input("Enter your choice: ", type=NUMBER, validate=check_student_admin_choice, help_text='Enter your choice number', required=True)
         else:
             choice=7
 

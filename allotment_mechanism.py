@@ -4,7 +4,8 @@ from csv import *
 from pywebio.input import *
 from pywebio.output import *
 
-header_img = open('images/header_new.jpg', 'rb').read()    
+header_img = open('images/header_new.jpg', 'rb').read()  
+success_image= open("images/success.png", 'rb').read()  
 comp_allotment=[]
 IT_allotment=[]
 mech_allotment=[]
@@ -102,6 +103,7 @@ class Allotment_mechanism:
                 for i in range(1, 11):
                     set_processbar('bar', i / 10)
                     time.sleep(0.1)
+                put_image(success_image, width='20%', height='20%')    
                 put_success("Allotment process completed.") 
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
             clear('ROOT')

@@ -14,6 +14,7 @@ pwd=None
 
 stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
 header_img = open('images/header_new.jpg', 'rb').read()
+privacy_policy_img = open('images/PrivacyPolicy.jpg','rb').read()
 
 def check_cet(user_inp):
     if (user_inp > 200 or user_inp < 0):
@@ -147,35 +148,39 @@ class Data:
                 for row in reader_object:
                     if(row[0]==name) and row[1]==srname:
                         with use_scope('ROOT'):
-                                put_image(header_img, width='100%', height='40px', position=0)
-                        if(row[4] == '-1' and row[5] == '-1' and row[6] == '-1'):
-                            with use_scope("main", clear=True):
-                                put_error("Application is incomplete")
-                            return    
+                            put_image(header_img, width='100%', height='40px', position=0)
+                            # if(int(row[4]) == -1) and (int(row[5]) == -1) and (int(row[6]) == -1):  
+                            #     with use_scope("main", clear=True):
+                            #         put_error("Application is incomplete")
+                            #     time.sleep(2)
+                            #     clear('ROOT')
+                            #     return    
+                            #else:
+                            
+                        with use_scope("main", clear=True):    
+                            style(put_text("Applicant details: "), "color: darkblue")
+                    
+                        put_table([["Name", f"{row[0]} {row[1]}"],
+                        ["Email",f"{row[2]}"],
+                        ["Marks",f"{row[3]}"],
+                        ["Gender", f"{row[9]}"],
+                        ["Preference 1 code",f"{row[4]}"],
+                        ["Preference 2 code",f"{row[5]}"],
+                        ["Preference 3 code",f"{row[6]}"],
+                        ])
+                        if(int(row[4]) == -1) and (int(row[5]) == -1) and (int(row[6]) == -1):   
+                            put_error("Application is incomplete")
+                            
+                        if mymachine.allotment_done== True:
+                            if (row[7]!="-"):
+                                put_success(f"\nAlloted branch: {row[7]} Engineering") 
+                            else:
+                                put_info("No seat alloted in this round.")     
                         else:
-                            
-                            with use_scope("main", clear=True):    
-                                style(put_text("Applicant details: "), "color: darkblue")
-                            
-                                put_table([["Name", f"{row[0]} {row[1]}"],
-                                ["Email",f"{row[2]}"],
-                                ["Marks",f"{row[3]}"],
-                                ["Gender", f"{row[9]}"],
-                                ["Preference 1 code",f"{row[4]}"],
-                                ["Preference 2 code",f"{row[5]}"],
-                                ["Preference 3 code",f"{row[6]}"],
-                                ])
-                            
-                                if mymachine.allotment_done== True:
-                                    if (row[7]!="-"):
-                                        put_success(f"\nAlloted branch: {row[7]} Engineering") 
-                                    else:
-                                        put_info("No seat alloted in this round.")     
-                                else:
-                                    put_error("Allotment not done yet")
-                                data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
-                            clear('ROOT')     
-                            return
+                            put_error("Allotment not done yet")
+                        data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
+                        clear('ROOT')     
+                        return
             put_error("Sorry! No record found")            
             
 
@@ -355,7 +360,7 @@ class Data:
         else:   
             no_allot_list= mymachine.get_no_allotment_data() 
             with use_scope("main", clear=True) :
-                put_info(f"{len(no_allot_list)} Student(s) were not alloted any seat:")
+                put_info(f"{len(no_allot_list)} Student(s) with complete applications were not alloted any seat:")
             
                 put_table([[f"{person[0]}",f"{person[1]}"] for person in no_allot_list], header=["NAME", "SURNAME"])
                 data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
@@ -378,11 +383,26 @@ class Data:
             data = input_group("Press button to return to menu",[actions('', [ {'label': 'Back', 'value': 1},], name='action', help_text=None),])
         clear('ROOT')    
             
+    def encrypt(self,plaintext, offset=14):
+        ciphertext=""
+        for char in plaintext:
+            if (char.isupper()):  
+                ciphertext += chr((ord(char) + offset - 64) % 26 + 65)  
+        
+            elif(char.islower()):  
+                ciphertext += chr((ord(char) + offset - 96) % 26 + 97)
+            else:
+                ciphertext += char 
+        return ciphertext             
+    
+
     
     def student_sign_up(self):
+        
         signup_img = open('images/sign_up_img.jpg', 'rb').read()
         with use_scope("main", clear=True):
             put_image(signup_img,width='150%',height='400px')
+            put_image(privacy_policy_img, width='70%', height= '200px')
             data = input_group("Student sign up info",[input('Enter your Name', type=TEXT, name='name',required=True), input('Enter your Surname', name='surname', type=TEXT, required=True)])
 
         #check whether the person has already signed up
@@ -398,7 +418,20 @@ class Data:
 
         # if they havent signed up already, ask them to set password and add a new record. 
         with use_scope("main"):
-            pswd = input("Set your password: ", type=PASSWORD, required=True)
+            pswd_1="def1"
+            pswd_2="def2"
+            while(pswd_1!=pswd_2):
+                pswd_data= input_group("",[
+                    input("Set your password: ", type=PASSWORD, required=True, name="pswd_1"),
+                    input("Confirm password: ", type=PASSWORD, required=True, name="pswd_2"),
+                ])
+                pswd_1= pswd_data["pswd_1"]
+                pswd_2= pswd_data["pswd_2"]
+                if(pswd_1!=pswd_2):
+                    put_error("Passwords do not match, please try again!")
+                    time.sleep(1)
+        
+        cipher_pwd = self.encrypt(pswd_2)
         with open('datasheet.csv', 'a+', newline='') as f_object: 
             writer_object = writer(f_object) 
             email = "-"
@@ -407,8 +440,8 @@ class Data:
             pref1 = -1
             pref2 = -1
             pref3 = -1
-            allotment = "--"
-            record = [data['name'], data['surname'], email, marks, pref1, pref2, pref3, allotment,pswd,gender]
+            allotment = '-'
+            record = [data['name'], data['surname'], email, marks, pref1, pref2, pref3,allotment,cipher_pwd,gender]
             writer_object.writerow(record) 
             f_object.close()
         with use_scope("main"):    
@@ -418,16 +451,51 @@ class Data:
         
     def check_pswd(self, name):
         password = input("Enter your password: ", type=PASSWORD)
+        cipher_pwd = self.encrypt(password)
         with open("datasheet.csv",'r') as f:
             reader_object = reader(f)
             for row in reader_object:
-                if(row[0]==name) and row[8]==password:
+                if(row[0]==name) and row[8]==(cipher_pwd):
                     global pwd
-                    pwd= password
+                    pwd= cipher_pwd
                     return(1)
         return 0 
     
-    
+    def change_password(self):
+        global pwd
+        row_to_edit = self.find_record(name, pwd)
+        clear("main")
+        with use_scope('ROOT'):
+                put_image(header_img, width='100%', height='40px', position=0)
+        with use_scope("main", clear=True) :       
+            pswd_data= input_group("",[
+                    input("Current password: ", type=PASSWORD, required=True, name="pswd_cur"),
+                    input("Set your new password: ", type=PASSWORD, required=True, name="pswd_new1"),
+                    input("Confirm password: ", type=PASSWORD, required=True, name="pswd_new2"),
+                ])
+            if (pwd == self.encrypt(pswd_data["pswd_cur"])) and (pswd_data["pswd_new1"]== pswd_data["pswd_new2"]):
+                changed_pwd= self.encrypt(pswd_data["pswd_new2"]) 
+                print("reached here")
+                with open("datasheet.csv",'r') as f:
+                    lines= f.read().splitlines()
+                    fields=[]
+                    fields=lines[row_to_edit-1].split(',')
+                    lines[row_to_edit-1]= f"{fields[0]},{fields[1]},{fields[2]},{fields[3]},{fields[4]},{fields[5]},{fields[6]},{fields[7]},{changed_pwd},{fields[9]}"
+                print("reached after line split")
+                with open("datasheet.csv",'w') as f:
+                    # overwrite
+                    for line in lines:
+                        f.write(line+"\n")   
+
+                pwd= changed_pwd 
+            
+                put_success("Password changed successfully!")
+            else:
+                put_error("Error. Passwords do not match. Please try again!")
+        time.sleep(2)
+        clear('ROOT')
+        clear("main")                    
+
     def view_full_allotment(self):
         with use_scope('ROOT'):
                 put_image(header_img, width='100%', height='40px', position=0)
@@ -461,7 +529,7 @@ class Data:
         
         
 
-    student_options=[view_seatmatrix, edit_record, search_student, delete_record, view_cutoff_marks,vacancies_left]
+    student_options=[view_seatmatrix, edit_record, search_student, delete_record, view_cutoff_marks,vacancies_left,change_password]
     admin_options=[mymachine.run_allotment, view_full_allotment, view_branchwise_allotment, search_student, students_without_allotment, vacancies_left]   
     
 
