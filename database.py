@@ -12,9 +12,9 @@ user= None
 name=""
 pwd=None
 
-stud_menu_img = open('images\student_menu_img.jpg', 'rb').read()
-header_img = open('images\header_new.jpg', 'rb').read()
-privacy_policy_img = open('images\PrivacyPolicy.jpg','rb').read()
+stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
+header_img = open('images/header_new.jpg', 'rb').read()
+privacy_policy_img = open('images/PrivacyPolicy.jpg','rb').read()
 
 def check_cet(user_inp):
     if (user_inp > 200 or user_inp < 0):
@@ -399,7 +399,7 @@ class Data:
     
     def student_sign_up(self):
         
-        signup_img = open('images\sign_up_img.jpg', 'rb').read()
+        signup_img = open('images/sign_up_img.jpg', 'rb').read()
         with use_scope("main", clear=True):
             put_image(signup_img,width='150%',height='400px')
             put_image(privacy_policy_img, width='70%', height= '200px')
