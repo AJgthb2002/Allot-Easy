@@ -399,7 +399,7 @@ class Data:
     
     def student_sign_up(self):
         
-        signup_img = open('images/sign_up_img.jpg', 'rb').read()
+        signup_img = open('images\sign_up_img.jpg', 'rb').read()
         with use_scope("main", clear=True):
             put_image(signup_img,width='150%',height='400px')
             put_image(privacy_policy_img, width='70%', height= '200px')
