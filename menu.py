@@ -7,12 +7,11 @@ from allotment_mechanism import *
 
 mydata= Data() #object of class Data
 mymachine= Allotment_mechanism()
-welm_img = open('images\Welcome to AllotEasy.jpg', 'rb').read()  
-header_img = open('images\header_new.jpg', 'rb').read()
-aboutus_img = open('images\Aboutus_img.jpg', 'rb').read()
+welm_img = open('images/Welcome to AllotEasy.jpg', 'rb').read()  
+header_img = open('images/header_new.jpg', 'rb').read()
+aboutus_img = open('images/Aboutus_img.jpg', 'rb').read()
 
-
-# def check_student_admin_choice(user_inp):
+#def check_student_admin_choice(user_inp):
 #     if (user_inp > 7 or user_inp < 1):
 #         return ("Invalid choice number. Select a choice from 1 to 7") 
     
@@ -91,7 +90,7 @@ class Menu:
                 self.login()
 
   def menu_for_student(self):
-    stud_menu_img = open('images\student_menu_img.jpg', 'rb').read()
+    stud_menu_img = open('images/student_menu_img.jpg', 'rb').read()
     
     choice= None 
     
@@ -119,7 +118,7 @@ class Menu:
 
   def menu_for_admin(self):
     clear('ROOT') 
-    admin_menu_img = open('images\admin_menu_img.jpg', 'rb').read()
+    admin_menu_img = open('images/admin_menu_img.jpg', 'rb').read()
     mymachine.flag=0
     choice= None 
     while(choice!=7):  # breaks out of loop when 7 i.e. logout is selected
