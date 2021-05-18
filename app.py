@@ -33,12 +33,12 @@ def main_func():
 
 app.add_url_rule('/tool', 'webio_view', webio_view(main_func), methods=['GET','POST','OPTIONS'])
 
-# if __name__== '__main__':
-#     parser= argparse.ArgumentParser()
-#     parser.add_argument("-p", "--port", type=int, default=8080)
-#     args= parser.parse_args()
-#     start_server(main_func, port= args.port, websocket_ping_interval= 60)
+if __name__== '__main__':
+    parser= argparse.ArgumentParser()
+    parser.add_argument("-p", "--port", type=int, default=8080)
+    args= parser.parse_args()
+    start_server(main_func, port= args.port, websocket_ping_interval= 60)
 
-app.run(host='Localhost', port=80) 
+#app.run(host='Localhost', port=80) 
 
 # visit http://localhost/tool to open the application
