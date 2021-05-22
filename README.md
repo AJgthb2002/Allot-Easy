@@ -35,6 +35,7 @@ Each file contains a class which has the related data members and functions defi
 The functionality is divided mainly into 2 parts: For **Admin** and **Student**. 
 There are different functionalities available to the user depending upon whether he/she is an Admin or a Student. Validations are added for all inputs to ensure an error free experience.
 The system carries out seat allocation efficiently for 500+ student records currently present in the database.
+**Passwords are encrypted** with a simple caesar-cipher algorithm before saving in the datasheet.
 
 **Functions available for Students:**
 - **Sign Up** :  
@@ -78,7 +79,7 @@ Students can view the vacancies left after allotment is done, for each course of
 ### What's next?
 We will continue updating the project with additional features such as
 - Forgot Password- A new temporary password will be emailed to the user.
-- Password encryption by using a strong algorithm.
+- Password encryption by using a stronger algorithm.
 - Validation of score entered by applicant by extracting the score from the uploaded scorecard in pdf form.
 - Feature for students that allow them to download their allotment result as a pdf file and Admin feature to download the full allotment result list in the form of pdf.
 - Course seat prediction, based on score by using ML algorithms.
